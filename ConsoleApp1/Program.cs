@@ -4,6 +4,9 @@ public class MainClass
 {
     public static void Main()
     {
+        string[] s = Console.ReadLine().Split(' ');
+        int[] arr = new int[s.Length]; // массив с длинной s.Length
+        for (int i = 0; i < s.Length; i++)// 
         // Считывает элементы массива с консоли через пробел 
 
         int n; // Создаем переменную
