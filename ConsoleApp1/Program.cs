@@ -2,37 +2,95 @@
 using System;
 public class MainClass
 {
-    public static void Main()
+    public static void Main(string[] args)
     {
-        string[] s = Console.ReadLine().Split(' ');
-        int[] arr = new int[s.Length]; // массив с длинной s.Length
-        for (int i = 0; i < s.Length; i++)// 
-        // Считывает элементы массива с консоли через пробел 
-
-        int n; // Создаем переменную
-        n = Convert.ToInt32(Console.ReadLine()); // Запрашиваем у юзера
-        string[] s = Console.ReadLine().Split(' ');// 
-        int[] arr = new int[n];// Масссив числ с именем arr и размером n
-        for(int i = 0;i<n; i++)// Пробегаемся по всему массиву
-        {
-            arr[i] = Convert.ToInt32(s[i]); // На каждом шаге массива присваем соответсвующи элемент - s[i]
-        }
-        Console.WriteLine(arr[3]);//выводим элемент массива
-        for (int i = 0; i < n; i++)// Выводим весь массив на нашу консоль 1 ый способ 
-        {
-            Console.Write($"{arr[i]} ");
-        }
-        Console.Write("\n");
-
-
-        foreach(int i in arr)// создаем переменную i в arr. Удобен если используем его последовательно , развернуть егго нельзя
-        {
-            Console.Write($"{i} ");
-        }
-
-
-
-
+        var userInfo = EnterUser();
+        Console.WriteLine($"User Info:\nИмя {userInfo.Name} \nФамилия {userInfo.LastName} \nВозраст: {userInfo.Age} \nДомашние питомцы: {userInfo.Pets} \nЛюбимые цвета: {string.Join(", ", userInfo.favcolors)}");
     }
 
+    public static (string Name, string LastName, int Age, bool Pets, string[] favcolors) EnterUser()
+    {
+        (string Name, string LastName, int Age, bool Pets, string[] favcolors) User = (Name: "", LastName: "", Age: 0, Pets: true, favcolors: new string[0]);
+
+
+        Console.WriteLine("Введите имя");
+        User.Name = Console.ReadLine();
+
+        Console.WriteLine("Введите Фамилию");
+        User.LastName = Console.ReadLine();
+
+
+        do
+        {
+            Console.WriteLine("Введите возраст цифрами");
+
+        } while (!int.TryParse(Console.ReadLine(), out User.Age));
+
+
+        bool? Pets = null;
+        do
+        {
+            Console.WriteLine("У вас есть домашний питомец ( Да/Нет):  ");
+            var inPut = Console.ReadLine();
+            if (inPut == "Да")
+            {
+                Pets = true;
+            }
+            else if (inPut == "Нет")
+            {
+                Pets = false;
+            }
+
+
+        }
+        while (Pets == null);
+        if (Pets != null && Pets == true)
+        {
+            var petsCount = ReadPositiveInt("Как много у вас домшних питомцов");
+            var hasPets = ReadStrings(petsCount, "Имя животного/ых");
+            
+        }
+        var colorCount = ReadPositiveInt("Как много у тебя любимых цветов");
+        User.favcolors = ReadStrings(colorCount, "Color:");
+
+
+        return User;
+    }
+    static bool CheckNum(string number, out int corrnumber)
+    {
+
+
+        if (int.TryParse(number, out int intnum))
+        {
+            if (intnum > 0)
+            {
+                corrnumber = intnum;
+                return true;
+            }
+        }
+        {
+            corrnumber = 0;
+            return false;
+        }
+
+    }
+    static string[] ReadStrings(int count, string message)
+    {
+        var strings = new string[count];
+        for (int i = 0; i < count; i++)
+        {
+            Console.Write($"{message} № {i + 1}: ");
+            strings[i] = Console.ReadLine();
+        }
+        return strings;
+    }
+    static int ReadPositiveInt(string message)
+    {
+        int colorCount;
+        do
+        {
+            Console.Write($"{message}: ");
+        } while (!int.TryParse(Console.ReadLine(), out colorCount) && colorCount <= 0);
+        return colorCount;
+    }
 }
